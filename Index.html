@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIRAMASSA - Pizzaria & Pastelaria</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/48/pizza-emoji.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Poppins:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0d0d;
+            position: relative;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Foto da Pizza no Topo */
+        .img-exemplo {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(13,13,13,0.95)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Imagem abstrata para os blocos */
+        .img-bloco {
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: #fbbf24;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .lista-extra {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.3s;
+        }
+        .lista-extra.expandida {
+            max-height: 1200px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+
+        /* MARCA DE ÁGUA ABSOLUTA: POR CIMA DE TUDO NO SITE INTEIRO */
+        .pelicula-protecao {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* Z-INDEX 9999 garante que fica à frente do menu, das fotos, de tudo! */
+            z-index: 9999; 
+            pointer-events: none; /* Permite que o utilizador clique nos botões por trás normalmente */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            overflow: hidden;
+            opacity: 0.03; /* Transparência muito sutil para não tapar o menu */
+            transform: rotate(-25deg) scale(1.3); /* Inclina as linhas em todo o ecrã */
+        }
+        .linha-marca {
+            font-size: 5.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            color: #ffffff;
+            white-space: nowrap;
+            width: 200%;
+            margin-left: -50%;
+            font-family: 'Poppins', sans-serif;
+        }
+        @media (max-width: 768px) {
+            .linha-marca {
+                font-size: 3rem;
+                letter-spacing: 0.3em;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-300 min-h-screen flex flex-col justify-between">
+
+    <!-- PELÍCULA QUE COBRE O SITE INTEIRO POR CIMA DE TUDO -->
+    <div class="pelicula-protecao">
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+        <div class="linha-marca">EXEMPLO EXEMPLO EXEMPLO EXEMPLO</div>
+    </div>
+
+    <!-- BARRA DE NAVEGAÇÃO SUPERIOR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0d0d0d]/95 backdrop-blur-md border-b border-zinc-900 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-serif text-xl font-bold tracking-widest text-white">GIRAMASSA</a>
+            <div class="flex space-x-8 text-xs tracking-[0.2em] uppercase font-medium text-gray-400">
+                <a href="#quem-somos" class="nav-link hover:text-white">Quem Somos</a>
+                <a href="#zona-menu" class="nav-link hover:text-white">Menu</a>
+                <a href="#contactos" class="nav-link hover:text-white">Contactos</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (FOTO DA PIZZA) -->
+    <header class="img-exemplo h-[60vh] flex flex-col justify-between p-6 text-center relative border-b border-zinc-900/60">
+        <div class="absolute top-28 left-0 right-0 mx-auto max-w-xs">
+            <span class="text-[10px] tracking-[0.3em] uppercase text-amber-400 bg-zinc-900/90 backdrop-blur-sm px-4 py-1.5 rounded-full border border-amber-400/30 font-medium">
+                Menu Digital Atualizado
+            </span>
+        </div>
+        
+        <div class="my-auto pt-20">
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-wide text-white drop-shadow-2xl">
+                GIRAMASSA
+            </h1>
+            <div class="w-12 h-[1px] bg-amber-400/60 mx-auto my-6"></div>
+            <p class="text-xs md:text-sm tracking-[0.3em] uppercase text-amber-400 font-light">
+                Pizzaria & Pastelaria
+            </p>
+        </div>
+
+        <div class="pb-2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-amber-400/40 text-lg"></i>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow relative">
+        
+        <!-- SECÇÃO: TITULO... -->
+        <section id="quem-somos" class="bg-[#0d0d0d] py-20 px-6 border-b border-zinc-900/40">
+            <div class="max-w-2xl mx-auto text-center space-y-6">
+                <h2 class="font-serif text-3xl md:text-4xl text-white tracking-wide">Título...</h2>
+                <div class="w-8 h-[1px] bg-amber-400/40 mx-auto"></div>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                    Texto texto...
+                </p>
+            </div>
+        </section>
+
+        <!-- CONTENTOR DA ZONA DO MENU -->
+        <div id="zona-menu" class="bg-black py-16">
+            
+            <div class="max-w-6xl mx-auto px-6 mb-16 text-center">
+                <span class="text-xs tracking-[0.25em] uppercase text-amber-400 font-medium">A Nossa Ementa</span>
+                <h2 class="font-serif text-4xl text-white mt-2">O Menu Giramassa</h2>
+            </div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 gap-12 px-4 md:px-6">
+                
+                <!-- 1. Categoria: Pizzas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
+                    <div class="p-8 md:p-12 my-auto space-y-6">
+                        <h3 class="font-serif text-2xl text-white border-b border-zinc-900 pb-3">Pizzas</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">4 Estações</h4>
+                                    <span class="text-amber-400 text-xs">Sob consulta</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, bacon, cogumelos, camarão e orégãos.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Calzone (Fechada)</h4>
+                                    <span class="text-amber-400 text-xs">Sob consulta</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, chouriço, cogumelos, fiambre, cebola, pimento e molho barbecue.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Pepperoni "Caliente"</h4>
+                                    <span class="text-amber-400 text-xs">Sob consulta</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, pepperoni, azeitonas, ovo estrelado e orégãos.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Giramassa "Casa"</h4>
+                                    <span class="text-amber-400 text-xs">Sob consulta</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, chouriço, bacon, pimento, azeitona e orégãos.</p>
+                            </div>
+
+                            <div id="extra-pizzas" class="lista-extra space-y-4 border-t border-zinc-900/60 pt-4">
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Margherita</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prosciutto</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Exótica</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, chouriço, ananás, cogumelos, azeitonas e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Boloiboca</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, fiambre, queijo, carne bolonhesa, azeitonas, bacon, salsicha, lombo fatiado, cebola crocante, ketchup e maionese.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Toscana</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, chouriço, ovo cozido, azeitonas e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Vegetariana</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, cogumelos, pimento, milho doce e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Caprichosa</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, ovo cozido, milho, cogumelos, salsicha, delícias do mar e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Doce Tentação</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, presunto, pêssego e queijo da serra.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Bolonhesa</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, carne à bolonhesa, azeitonas e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Padrão "B"</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, fiambre, queijo, bacon e batatas.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Burguesa</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, mozzarella, carne picada, cebola roxa, bacon, queijo cheddar.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Atum</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, atum, cebola, ovo cozido, pimento, azeitonas e orégãos.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">"Batatuda"</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, fiambre, chouriço, bacon, salsicha, batata palha, cebola crocante, maionese e ketchup.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">"A Gosto"</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo e até 4 ingredientes à sua escolha.</p>
+                                </div>
+                            </div>
+
+                            <button onclick="toggleSecao('extra-pizzas', this)" class="text-xs tracking-wider text-amber-400/80 hover:text-amber-400 font-medium pt-2 flex items-center gap-1 focus:outline-none">
+                                <span>+ Ver mais opções</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64 md:h-auto min-h-[350px] img-bloco"></div>
+                </div>
+
+                <!-- 2. Categoria: Cachorros & Kebab -->
+                <div class="grid grid-cols-1 md:grid-cols-2 bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
+                    <div class="h-64 md:h-auto min-h-[350px] img-bloco md:order-first order-last"></div>
+                    <div class="p-8 md:p-12 my-auto space-y-6">
+                        <h3 class="font-serif text-2xl text-white border-b border-zinc-900 pb-3">Cachorros & Kebab</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Cachorrinho</h4>
+                                    <span class="text-amber-400 text-xs">Especialidade</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Queijo, fiambre, salsicha e molho picante.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Cachorro Normal</h4>
+                                    <span class="text-amber-400 text-xs">Clássico</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Frango, fiambre, chouriço, salsicha, maionese e ketchup.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Cachorro Especial</h4>
+                                    <span class="text-amber-400 text-xs">Completo</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Batata, fiambre, chouriço, salsicha tradicional, cenoura, molho especial e batata.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Cachorro Kebab</h4>
+                                    <span class="text-amber-400 text-xs">Fusão</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Frango, fiambre, carne kebab, batata frita, molho especial, batata.</p>
+                            </div>
+
+                            <div id="extra-kebab" class="lista-extra space-y-4 border-t border-zinc-900/60 pt-4">
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Pizza Kebab</h4>
+                                        <span class="text-amber-400 text-xs">Sob consulta</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Molho de tomate, queijo, carne kebab, cogumelos, pimentos e molho kebab.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Durum Kebab</h4>
+                                        <span class="text-amber-400 text-xs">Prático</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Pão pita, carne kebab, alface, tomate, cebola roxa, molho picante ou molho de iogurte.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Kebab em Prato</h4>
+                                        <span class="text-amber-400 text-xs">Completo</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Carne de kebab, salada, batatas fritas e molho kebab.</p>
+                                </div>
+                            </div>
+
+                            <button onclick="toggleSecao('extra-kebab', this)" class="text-xs tracking-wider text-amber-400/80 hover:text-amber-400 font-medium pt-2 flex items-center gap-1 focus:outline-none">
+                                <span>+ Ver mais options</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Categoria: Francesinhas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
+                    <div class="p-8 md:p-12 my-auto space-y-6">
+                        <h3 class="font-serif text-2xl text-white border-b border-zinc-900 pb-3">Francesinhas</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Francesinha Especial</h4>
+                                    <span class="text-amber-400 text-xs">Tradicional</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Bife (vaca ou frango), queijo, fiambre, linguiça, chouriço, molho especial, batata frita e ovo.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Francesinha Kebab</h4>
+                                    <span class="text-amber-400 text-xs">Inovação</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Queijo, fiambre, carne kebab, molho caseiro, batata frita e ovo fatiado ou inteiro.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Opção em Bolo do Caco</h4>
+                                    <span class="text-amber-400 text-xs">+1.50€</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Qualquer uma das francesinhas servida no tradicional e estaladiço bolo do caco.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Molhos Extra</h4>
+                                    <span class="text-amber-400 text-xs">Suplemento</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Disponível em doses extra de Molho de Francesinha, Molho Kebab ou Molho de Alho.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-64 md:h-auto min-h-[350px] img-bloco"></div>
+                </div>
+
+                <!-- 4. Categoria: Hamburgueres & Pregos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
+                    <div class="h-64 md:h-auto min-h-[350px] img-bloco md:order-first order-last"></div>
+                    <div class="p-8 md:p-12 my-auto space-y-6">
+                        <h3 class="font-serif text-2xl text-white border-b border-zinc-900 pb-3">Hambúrgueres & Pregos</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Hambúrguer Giramassa</h4>
+                                    <span class="text-amber-400 text-xs">Especial</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Pão brioche, hambúrguer de vaca, queijo, fiambre, bacon, alface, tomate, molho burger.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Hambúrguer Crispy</h4>
+                                    <span class="text-amber-400 text-xs">Crocante</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Pão brioche, hambúrguer de frango crocante, queijo da serra, bacon, alface, tomate, molho burger.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Hambúrguer no Prato (Giramassa/Crispy)</h4>
+                                    <span class="text-amber-400 text-xs">No Prato</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Hambúrguer servido no prato com ovo, batata frita e salada.</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline text-sm">
+                                    <h4 class="text-gray-200 font-medium">Hambúrguer Especial (Giramassa/Crispy)</h4>
+                                    <span class="text-amber-400 text-xs">Completo</span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-light mt-0.5">Pão brioche, hambúrguer (vaca ou frango), queijo duplo, bacon, ovo, batata frita e molho burger.</p>
+                            </div>
+
+                            <div id="extra-hamburgueres" class="lista-extra space-y-4 border-t border-zinc-900/60 pt-4">
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego em pão</h4>
+                                        <span class="text-amber-400 text-xs">Snack</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Pão, bife de vaca, fiambre e molho de carne.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego em pão de caco</h4>
+                                        <span class="text-amber-400 text-xs">Recomendado</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Pão de caco, fiambre e bife de vaca.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego no prato</h4>
+                                        <span class="text-amber-400 text-xs">Clássico</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Bife de vaca, batata, fiambre, ovo e salada.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego no prato c/ salsicha</h4>
+                                        <span class="text-amber-400 text-xs">Completo</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Bife de vaca, queijo, fiambre, ovo, batata e salsicha.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego no prato de alho</h4>
+                                        <span class="text-amber-400 text-xs">Especial</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Bife de vaca, queijo, fiambre, ovo e batata com molho de alho.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Prego no prato de alho c/ salsicha</h4>
+                                        <span class="text-amber-400 text-xs">Premium</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Bife de vaca, queijo, fiambre, ovo, batata, salsicha e molho de alho.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Bifana em pão</h4>
+                                        <span class="text-amber-400 text-xs">Tradicional</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Dois bifes, bacon, cebola, tomate, molho barbecue e batata frita crocante.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline text-sm">
+                                        <h4 class="text-gray-200 font-medium">Bifana no prato</h4>
+                                        <span class="text-amber-400 text-xs">No Prato</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-light mt-0.5">Carne de bifana estufada, batata frita, molho e salada.</p>
+                                </div>
+                            </div>
+
+                            <button onclick="toggleSecao('extra-hamburgueres', this)" class="text-xs tracking-wider text-amber-400/80 hover:text-amber-400 font-medium pt-2 flex items-center gap-1 focus:outline-none">
+                                <span>+ Ver mais opções</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SECÇÃO: TITULO... (CONTACTOS) -->
+        <section id="contactos" class="max-w-md mx-auto px-6 py-24 text-center space-y-6">
+            <h2 class="font-serif text-3xl text-white">Título...</h2>
+            <div class="w-8 h-[1px] bg-amber-400/40 mx-auto mb-4"></div>
+            <p class="text-gray-400 text-xs font-light tracking-wide uppercase mb-6">Texto texto...</p>
+            <div class="space-y-4">
+                <a href="tel:964775265" class="block w-full bg-white text-black font-medium tracking-wide py-4 rounded-full transition duration-300 hover:bg-amber-400 hover:text-black uppercase text-xs">
+                    <i class="fa-solid fa-phone mr-2"></i> Ligar: 964 775 265
+                </a>
+                <a href="https://maps.google.com/?q=Edificio+Vila+da+Longra,+4650-328+Rande" target="_blank" class="block w-full bg-zinc-950 text-gray-400 border border-zinc-900 font-light py-4 rounded-full transition duration-300 hover:text-white uppercase text-xs">
+                    <i class="fa-solid fa-location-dot mr-2 text-amber-400"></i> Edifício Vila da Longra, Rande
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-10 text-center text-[10px] md:text-xs text-gray-600 tracking-wider uppercase space-y-1 px-4 border-t border-zinc-900 relative">
+        <p>&copy; 2026 GIRAMASSA. Todos os direitos reservados.</p>
+        <p class="text-gray-400 font-medium mt-1">feito por diogo costa</p>
+    </footer>
+
+    <!-- SCRIPT DE EXPANSÃO -->
+    <script>
+        function toggleSecao(idSecao, botao) {
+            const lista = document.getElementById(idSecao);
+            const textoBotao = botao.querySelector('span');
+            
+            if (lista.classList.contains('expandida')) {
+                lista.classList.remove('expandida');
+                textoBotao.innerText = '+ Ver mais opções';
+            } else {
+                lista.classList.add('expandida');
+                textoBotao.innerText = '- Ver menos';
+            }
+        }
+    </script>
+
+</body>
+</html>
